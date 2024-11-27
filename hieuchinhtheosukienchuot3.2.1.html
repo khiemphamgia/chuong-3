@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chuyển đổi theo sự kiện chuột</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .card {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 20px;
+            width: 200px;
+        }
+        .image-container img {
+            width: 100%;
+            transition: transform 0.3s;
+        }
+        .text-box {
+            margin-top: 10px;
+        }
+        button {
+            padding: 8px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Thẻ Deep -->
+    <div class="card Deep">
+        <h3>Hover Me</h3>
+    </div>
+
+    <!-- Thẻ Image -->
+    <div class="card image-container">
+        <img src="https://via.placeholder.com/200" alt="Placeholder Image">
+    </div>
+
+    <!-- Thẻ TextBot -->
+    <div class="card">
+        <p id="TextBot">Nội dung ban đầu.</p>
+        <button onclick="displayCurrentTime()">Hiển thị giờ hiện tại</button>
+    </div>
+
+    <script>
+        // Chuyển nội dung từ "Hover Me" sang "Mouse Event" khi di chuột vào thẻ Deep
+        document.querySelector('.Deep').addEventListener('mouseenter', function() {
+            this.querySelector('h3').textContent = "MailEnv";
+        });
+
+        // Khôi phục lại nội dung khi chuột rời khỏi thẻ Deep
+        document.querySelector('.Deep').addEventListener('mouseleave', function() {
+            this.querySelector('h3').textContent = "Homeware";
+        });
+
+        // Tăng kích thước ảnh lên 10% khi di chuột vào thẻ Image
+        document.querySelector('.image-container img').addEventListener('mouseenter', function() {
+            this.style.transform = 'scale(1.1)';
+        });
+
+        // Khôi phục lại kích thước ảnh khi chuột rời khỏi
+        document.querySelector('.image-container img').addEventListener('mouseleave', function() {
+            this.style.transform = 'scale(1)';
+        });
+
+        // Hiển thị thông báo giờ hiện tại khi nhấn nút
+        function displayCurrentTime() {
+            const currentTime = new Date();
+            const hours = currentTime.getHours();
+            const minutes = currentTime.getMinutes();
+            const seconds = currentTime.getSeconds();
+            alert('Giờ hiện tại: ' + hours + ':' + minutes + ':' + seconds);
+            
+            // Chuyển nội dung trong TextBot thành chữ in hoa
+            document.getElementById('TextBot').textContent = document.getElementById('TextBot').textContent.toUpperCase();
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tra cứu giá hoa quả</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            width: 300px;
+            margin: auto;
+        }
+        input, button {
+            margin: 5px 0;
+            padding: 8px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .result {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Giá hoa quả</h2>
+        <input type="text" id="ten_hoa_qua" placeholder="Nhập tên hoa quả">
+        <button onclick="traCuuGia()">Xem giá</button>
+        <div class="result" id="ket_qua"></div>
+    </div>
+
+    <script>
+        function traCuuGia() {
+            // Lấy tên hoa quả từ ô nhập
+            const tenHoaQua = document.getElementById("ten_hoa_qua").value.trim().toLowerCase();
+
+            // Bảng giá hoa quả
+            const bangGia = {
+                "ổi": 20000,
+                "dưa hấu": 20000,
+                "táo": 30000,
+                "cam": 40000,
+                "chôm chôm": 40000,
+                "măng cụt": 50000
+            };
+
+            // Lấy phần tử hiển thị kết quả
+            const ketQua = document.getElementById("ket_qua");
+
+            // Tìm giá hoa quả
+            if (bangGia[tenHoaQua] !== undefined) {
+                ketQua.textContent = `${bangGia[tenHoaQua]} VNĐ/kg`;
+            } else {
+                ketQua.textContent = "Tìm không thấy";
+            }
+        }
+    </script>
+</body>
+</html>

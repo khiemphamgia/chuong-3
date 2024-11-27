@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tính số ngày trong tháng</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            width: 300px;
+            margin: auto;
+        }
+        input, button {
+            margin: 5px 0;
+            padding: 8px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .result {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Tính số ngày trong tháng</h2>
+        <input type="number" id="thang" placeholder="Nhập tháng (1-12)" min="1" max="12">
+        <input type="number" id="nam" placeholder="Nhập năm (VD: 2024)">
+        <button onclick="tinhSoNgay()">Tính số ngày</button>
+        <div class="result" id="ket_qua"></div>
+    </div>
+
+    <script>
+        function tinhSoNgay() {
+            // Lấy giá trị tháng và năm từ người dùng
+            const thang = parseInt(document.getElementById("thang").value);
+            const nam = parseInt(document.getElementById("nam").value);
+
+            const ketQua = document.getElementById("ket_qua");
+
+            // Kiểm tra dữ liệu đầu vào
+            if (isNaN(thang) || isNaN(nam) || thang < 1 || thang > 12) {
+                ketQua.textContent = "Vui lòng nhập tháng (1-12) và năm hợp lệ.";
+                return;
+            }
+
+            // Tính số ngày trong tháng
+            let soNgay;
+            switch (thang) {
+                case 1: case 3: case 5: case 7: case 8: case 10: case 12:
+                    soNgay = 31;
+                    break;
+                case 4: case 6: case 9: case 11:
+                    soNgay = 30;
+                    break;
+                case 2:
+                    // Kiểm tra năm nhuận
+                    if ((nam % 4 === 0 && nam % 100 !== 0) || (nam % 400 === 0)) {
+                        soNgay = 29;
+                    } else {
+                        soNgay = 28;
+                    }
+                    break;
+                default:
+                    soNgay = 0; // Trường hợp không hợp lệ (không xảy ra ở đây)
+            }
+
+            // Hiển thị kết quả
+            ketQua.textContent = `Tháng ${thang} năm ${nam} có ${soNgay} ngày.`;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kiểm tra năm nhuận</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        input, button {
+            padding: 8px;
+            margin: 10px 0;
+        }
+        .result {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h2>Kiểm tra năm nhuận</h2>
+    
+    <!-- Form nhập năm -->
+    <label for="yearInput">Nhập năm:</label>
+    <input type="number" id="yearInput" placeholder="Nhập năm để kiểm tra" />
+    <button onclick="kiemTraNamNhuan()">Kiểm tra</button>
+    
+    <!-- Kết quả kiểm tra năm nhuận -->
+    <p class="result" id="result"></p>
+
+    <script>
+        function kiemTraNamNhuan() {
+            const nam = document.getElementById("yearInput").value;
+            const resultElement = document.getElementById("result");
+            
+            if (nam === "") {
+                resultElement.textContent = "Vui lòng nhập một năm!";
+                return;
+            }
+            
+            if ((nam % 4 === 0 && nam % 100 !== 0) || (nam % 400 === 0)) {
+                resultElement.textContent = nam + " là năm nhuận.";
+                resultElement.style.color = "green";
+            } else {
+                resultElement.textContent = nam + " không phải là năm nhuận.";
+                resultElement.style.color = "red";
+            }
+        }
+    </script>
+</body>
+</html>

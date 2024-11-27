@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ứng dụng Quản lý Sản phẩm</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+        }
+        input, button, select {
+            margin: 5px 0;
+            padding: 8px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        .result {
+            margin-top: 20px;
+            font-weight: bold;
+            text-align: right;
+        }
+        .action-btn {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Ứng dụng Quản lý Sản phẩm</h2>
+
+        <!-- Form thêm sản phẩm -->
+        <input type="text" id="productName" placeholder="Nhập tên sản phẩm">
+        <input type="number" id="productPrice" placeholder="Nhập giá sản phẩm" min="0">
+        <input type="number" id="productQuantity" placeholder="Nhập số lượng sản phẩm" min="0">
+        <button onclick="themSanPham()">Thêm sản phẩm</button>
+
+        <!-- Bảng hiển thị danh sách sản phẩm -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Tên sản phẩm</th>
+                    <th>Giá (VNĐ)</th>
+                    <th>Số lượng</th>
+                    <th>Thành tiền (VNĐ)</th>
+                    <th>Hành động</th>
+                </tr>
+            </thead>
+            <tbody id="productList">
+                <!-- Nội dung sản phẩm sẽ được thêm động -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        let sanPhamList = []; // Mảng lưu trữ danh sách sản phẩm
+
+        // Hàm hiển thị danh sách sản phẩm
+        function hienThiSanPham() {
+            const productListTable = document.getElementById("productList");
+            productListTable.innerHTML = ""; // Xóa nội dung cũ
+
+            sanPhamList.forEach((sanPham, index) => {
+                const row = document.createElement("tr");
+
+                // Cột tên sản phẩm
+                const nameCell = document.createElement("td");
+                nameCell.textContent = sanPham.ten;
+                row.appendChild(nameCell);
+
+                // Cột giá
+                const priceCell = document.createElement("td");
+                priceCell.textContent = sanPham.gia.toLocaleString() + " VNĐ";
+                row.appendChild(priceCell);
+
+                // Cột số lượng
+                const quantityCell = document.createElement("td");
+                quantityCell.textContent = sanPham.soLuong;
+                row.appendChild(quantityCell);
+
+                // Cột thành tiền
+                const totalCell = document.createElement("td");
+                const totalPrice = sanPham.gia * sanPham.soLuong;
+                totalCell.textContent = totalPrice.toLocaleString() + " VNĐ";
+                row.appendChild(totalCell);
+
+                // Cột hành động (Sửa, Xóa)
+                const actionCell = document.createElement("td");
+                const editBtn = document.createElement("button");
+                editBtn.textContent = "Sửa";
+                editBtn.classList.add("action-btn");
+                editBtn.onclick = () => suaSanPham(index);
+
+                const deleteBtn = document.createElement("button");
+                deleteBtn.textContent = "Xóa";
+                deleteBtn.classList.add("action-btn");
+                deleteBtn.onclick = () => xoaSanPham(index);
+
+                actionCell.appendChild(editBtn);
+                actionCell.appendChild(deleteBtn);
+                row.appendChild(actionCell);
+
+                // Thêm hàng vào bảng
+                productListTable.appendChild(row);
+            });
+        }
+
+        // Hàm thêm sản phẩm vào danh sách
+        function themSanPham() {
+            const ten = document.getElementById("productName").value;
+            const gia = parseInt(document.getElementById("productPrice").value);
+            const soLuong = parseInt(document.getElementById("productQuantity").value);
+
+            if (!ten || gia <= 0 || soLuong <= 0) {
+                alert("Vui lòng nhập đầy đủ thông tin hợp lệ!");
+                return;
+            }
+
+            sanPhamList.push({ ten, gia, soLuong });
+            hienThiSanPham();
+
+            // Xóa nội dung ô nhập
+            document.getElementById("productName").value = "";
+            document.getElementById("productPrice").value = "";
+            document.getElementById("productQuantity").value = "";
+        }
+
+        // Hàm sửa thông tin sản phẩm
+        function suaSanPham(index) {
+            const sanPham = sanPhamList[index];
+
+            // Điền thông tin vào các ô nhập
+            document.getElementById("productName").value = sanPham.ten;
+            document.getElementById("productPrice").value = sanPham.gia;
+            document.getElementById("productQuantity").value = sanPham.soLuong;
+
+            // Xóa sản phẩm cũ để sửa
+            sanPhamList.splice(index, 1);
+        }
+
+        // Hàm xóa sản phẩm khỏi danh sách
+        function xoaSanPham(index) {
+            if (confirm("Bạn có chắc chắn muốn xóa sản phẩm này?")) {
+                sanPhamList.splice(index, 1); // Xóa sản phẩm
+                hienThiSanPham(); // Làm mới giao diện
+            }
+        }
+        // Hiển thị danh sách sản phẩm khi trang được tải
+        window.onload = hienThiSanPham;
+    </script>
+</body>
+</html>

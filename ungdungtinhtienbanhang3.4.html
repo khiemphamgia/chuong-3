@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ứng dụng tính tiền bán hàng</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+        }
+        input, button, select {
+            margin: 5px 0;
+            padding: 8px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        .result {
+            margin-top: 20px;
+            font-weight: bold;
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Ứng dụng tính tiền bán hàng</h2>
+
+        <!-- Form thêm sản phẩm -->
+        <select id="sanPham">
+            <option value="Ổi|20000">Ổi - 20,000 VNĐ/kg</option>
+            <option value="Dưa hấu|20000">Dưa hấu - 20,000 VNĐ/kg</option>
+            <option value="Táo|30000">Táo - 30,000 VNĐ/kg</option>
+            <option value="Cam|40000">Cam - 40,000 VNĐ/kg</option>
+            <option value="Măng cụt|50000">Măng cụt - 50,000 VNĐ/kg</option>
+        </select>
+        <input type="number" id="soLuong" placeholder="Nhập số lượng (kg)" min="1">
+        <button onclick="themSanPham()">Thêm vào giỏ hàng</button>
+
+        <!-- Bảng hiển thị giỏ hàng -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Tên sản phẩm</th>
+                    <th>Giá (VNĐ/kg)</th>
+                    <th>Số lượng (kg)</th>
+                    <th>Thành tiền (VNĐ)</th>
+                    <th>Hành động</th>
+                </tr>
+            </thead>
+            <tbody id="gioHang">
+                <!-- Nội dung giỏ hàng sẽ được thêm động -->
+            </tbody>
+        </table>
+
+        <!-- Tổng tiền -->
+        <div class="result" id="tongTien">Tổng tiền: 0 VNĐ</div>
+    </div>
+
+    <script>
+        let gioHang = []; // Mảng lưu trữ giỏ hàng
+
+        // Hàm hiển thị giỏ hàng
+        function hienThiGioHang() {
+            const gioHangTable = document.getElementById("gioHang");
+            gioHangTable.innerHTML = ""; // Xóa nội dung cũ
+            let tongTien = 0; // Biến lưu tổng tiền
+
+            gioHang.forEach((sanPham, index) => {
+                const row = document.createElement("tr");
+
+                // Cột tên sản phẩm
+                const tenCell = document.createElement("td");
+                tenCell.textContent = sanPham.ten;
+                row.appendChild(tenCell);
+// Cột giá
+                const giaCell = document.createElement("td");
+                giaCell.textContent = sanPham.gia.toLocaleString() + " VNĐ";
+                row.appendChild(giaCell);
+
+                // Cột số lượng
+                const soLuongCell = document.createElement("td");
+                soLuongCell.textContent = sanPham.soLuong;
+                row.appendChild(soLuongCell);
+
+                // Cột thành tiền
+                const thanhTienCell = document.createElement("td");
+                const thanhTien = sanPham.gia * sanPham.soLuong;
+                thanhTienCell.textContent = thanhTien.toLocaleString() + " VNĐ";
+                row.appendChild(thanhTienCell);
+
+                // Cột hành động
+                const actionCell = document.createElement("td");
+                const btnXoa = document.createElement("button");
+                btnXoa.textContent = "Xóa";
+                btnXoa.onclick = () => xoaSanPham(index);
+                actionCell.appendChild(btnXoa);
+                row.appendChild(actionCell);
+
+                // Thêm hàng vào bảng
+                gioHangTable.appendChild(row);
+
+                // Cộng dồn tổng tiền
+                tongTien += thanhTien;
+            });
+
+            // Hiển thị tổng tiền
+            document.getElementById("tongTien").textContent = `Tổng tiền: ${tongTien.toLocaleString()} VNĐ`;
+        }
+
+        // Hàm thêm sản phẩm vào giỏ hàng
+        function themSanPham() {
+            const sanPhamInput = document.getElementById("sanPham").value.split("|");
+            const ten = sanPhamInput[0];
+            const gia = parseInt(sanPhamInput[1]);
+            const soLuong = parseInt(document.getElementById("soLuong").value);
+
+            if (!soLuong || soLuong <= 0) {
+                alert("Vui lòng nhập số lượng hợp lệ!");
+                return;
+            }
+
+            // Thêm sản phẩm vào mảng giỏ hàng
+            gioHang.push({ ten, gia, soLuong });
+
+            // Làm mới giao diện
+            hienThiGioHang();
+
+            // Xóa nội dung ô nhập số lượng
+            document.getElementById("soLuong").value = "";
+        }
+
+        // Hàm xóa sản phẩm khỏi giỏ hàng
+        function xoaSanPham(index) {
+            if (confirm("Bạn có chắc chắn muốn xóa sản phẩm này?")) {
+                gioHang.splice(index, 1); // Xóa sản phẩm
+                hienThiGioHang(); // Làm mới giao diện
+            }
+        }
+    </script>
+</body>
+</html>

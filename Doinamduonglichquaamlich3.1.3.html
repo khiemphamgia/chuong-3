@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đổi năm dương lịch sang âm lịch</title>
+    <script src="https://cdn.jsdelivr.net/npm/lunar@1.0.5/dist/lunar.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        input, button {
+            padding: 8px;
+            margin: 10px 0;
+        }
+        .result {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h2>Chuyển đổi năm Dương Lịch sang Âm Lịch</h2>
+    
+    <label for="yearInput">Nhập năm Dương lịch:</label>
+    <input type="number" id="yearInput" placeholder="Nhập năm dương lịch" />
+    <button onclick="doiLich()">Chuyển đổi</button>
+    
+    <p class="result" id="result"></p>
+
+    <script>
+        function doiLich() {
+            const namDuongLich = document.getElementById("yearInput").value;
+            const resultElement = document.getElementById("result");
+
+            if (namDuongLich === "") {
+                resultElement.textContent = "Vui lòng nhập năm dương lịch!";
+                return;
+            }
+
+            const lunar = new Lunar(namDuongLich, 1, 1);  // Khởi tạo đối tượng lịch âm với năm dương lịch và ngày mùng 1 Tết
+            const namAmLich = lunar.getLunarYear();  // Lấy năm âm lịch
+
+            resultElement.textContent = "Năm dương lịch " + namDuongLich + " tương ứng với năm âm lịch " + namAmLich;
+        }
+    </script>
+</body>
+</html>
